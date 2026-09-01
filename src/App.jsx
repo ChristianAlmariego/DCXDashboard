@@ -128,7 +128,7 @@ export default function App() {
 
         {!loading && !error && stories.length > 0 && tab === "dashboard" && (
           assigneeGroups.length === 0 ? <div className="empty-state">No stories match your filters.</div>
-            : <div className="dash-grid">{assigneeGroups.map(([name, items]) => <AssigneeCard key={name} name={name} stories={items} todayStr={todayStr} />)}</div>
+            : <div className="dash-grid">{assigneeGroups.map(([name, items]) => <AssigneeCard key={name} name={name} stories={items} todayStr={todayStr} teamLabel={conn.areaPath.split("\\").pop()} />)}</div>
         )}
 
         {!loading && !error && stories.length > 0 && tab === "summary" && (

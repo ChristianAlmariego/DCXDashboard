@@ -1026,3 +1026,45 @@ body {
   cursor: pointer;
 }
 .login-btn-secondary:hover { background: #e8ecf0; }
+
+/* ---- DCX missing card styles ---- */
+.s-done { background: #f0fff4; }
+.pill-done { background: #d4edda; color: #155724; border-color: #28a745; }
+.pill-done.story-badge, .story-badge.pill-done { background: #d4edda; color: #155724; border-color: #28a745; }
+
+/* Assignee card (DCX style — mirrors AIDashboard2 .card) */
+.assignee-card {
+  background: #fff; border: 1px solid #d0d7de; border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.assignee-hdr {
+  background: #003865; color: #fff; padding: 12px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.assignee-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+.assignee-info { flex: 1; min-width: 0; }
+.assignee-name { font-size: 14px; font-weight: 700; }
+.assignee-meta { font-size: 11px; opacity: 0.7; margin-top: 1px; }
+.assignee-stories { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+
+.story-item {
+  border-left: 3px solid #adb5bd; border-radius: 4px;
+  background: #f8f9fa; padding: 8px 10px;
+  border: 1px solid #e1e4e8; border-left-width: 3px;
+}
+.story-item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 6px; }
+.story-state-badge {
+  font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px;
+  border: 1px solid; white-space: nowrap;
+}
+.story-id-link { font-size: 11px; color: #0078d4; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.story-id-link:hover { text-decoration: underline; }
+.story-title-link { font-size: 12px; font-weight: 600; color: #24292f; text-decoration: none; display: block; line-height: 1.35; }
+.story-title-link:hover { color: #0078d4; text-decoration: underline; }
+.story-meta-row { display: flex; gap: 10px; font-size: 11px; color: #57606a; margin-top: 4px; flex-wrap: wrap; }
