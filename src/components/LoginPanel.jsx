@@ -9,10 +9,11 @@ export default function LoginPanel({ onConnect, loading, error }) {
   const [org, setOrg] = useState(DEFAULT_ORG);
   const [project, setProject] = useState(DEFAULT_PROJECT);
   const [areaPaths, setAreaPaths] = useState([]);
-  const [areaPath, setAreaPath] = useState("");
+  const [selected, setSelected] = useState(new Set());
+  const [search, setSearch] = useState("");
   const [fetching, setFetching] = useState(false);
   const [fetchError, setFetchError] = useState(null);
-  const [step, setStep] = useState(1); // 1 = credentials, 2 = area path
+  const [step, setStep] = useState(1);
 
   async function handleFetchPaths() {
     if (!pat.trim() || !org.trim() || !project.trim()) return;
@@ -21,7 +22,7 @@ export default function LoginPanel({ onConnect, loading, error }) {
     try {
       const paths = await fetchAreaPaths(pat.trim(), org.trim(), project.trim());
       setAreaPaths(paths);
-      setAreaPath(paths[0] || "");
+      setSelected(new Set());
       setStep(2);
     } catch (e) {
       setFetchError(e.message);
@@ -30,10 +31,20 @@ export default function LoginPanel({ onConnect, loading, error }) {
     }
   }
 
-  function handleConnect() {
-    if (!areaPath) return;
-    onConnect({ pat: pat.trim(), org: org.trim(), project: project.trim(), areaPath });
+  function toggle(p) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(p)) next.delete(p); else next.add(p);
+      return next;
+    });
   }
+
+  function handleConnect() {
+    if (selected.size === 0) return;
+    onConnect({ pat: pat.trim(), org: org.trim(), project: project.trim(), areaPaths: [...selected] });
+  }
+
+  const filtered = areaPaths.filter((p) => p.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="login-overlay">
@@ -46,21 +57,11 @@ export default function LoginPanel({ onConnect, loading, error }) {
           <>
             <div className="login-field">
               <label className="login-label">Organization</label>
-              <input
-                className="login-input"
-                value={org}
-                onChange={(e) => setOrg(e.target.value)}
-                placeholder="e.g. EmersonAutomationSolutions"
-              />
+              <input className="login-input" value={org} onChange={(e) => setOrg(e.target.value)} placeholder="e.g. EmersonAutomationSolutions" />
             </div>
             <div className="login-field">
               <label className="login-label">Project</label>
-              <input
-                className="login-input"
-                value={project}
-                onChange={(e) => setProject(e.target.value)}
-                placeholder="e.g. EMR-DigMod"
-              />
+              <input className="login-input" value={project} onChange={(e) => setProject(e.target.value)} placeholder="e.g. EMR-DigMod" />
             </div>
             <div className="login-field">
               <label className="login-label">Personal Access Token</label>
@@ -74,11 +75,7 @@ export default function LoginPanel({ onConnect, loading, error }) {
               />
             </div>
             {fetchError && <div className="login-error">{fetchError}</div>}
-            <button
-              className="login-btn"
-              onClick={handleFetchPaths}
-              disabled={fetching || !pat.trim() || !org.trim() || !project.trim()}
-            >
+            <button className="login-btn" onClick={handleFetchPaths} disabled={fetching || !pat.trim() || !org.trim() || !project.trim()}>
               {fetching ? "Fetching teams…" : "Next →"}
             </button>
           </>
@@ -87,38 +84,43 @@ export default function LoginPanel({ onConnect, loading, error }) {
         {step === 2 && (
           <>
             <div className="login-field">
-              <label className="login-label">Select Team (Area Path)</label>
-              <select
-                className="login-input login-select"
-                value={areaPath}
-                onChange={(e) => setAreaPath(e.target.value)}
-                size={Math.min(areaPaths.length, 10)}
-              >
-                {areaPaths.map((p) => (
-                  <option key={p} value={p}>{p}</option>
+              <label className="login-label">
+                Select Teams (Area Paths)
+                <span className="login-label-hint"> — select one or more</span>
+              </label>
+              <input
+                className="login-search-paths"
+                type="search"
+                placeholder="Filter paths…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <div className="login-checklist">
+                {filtered.length === 0 && <div className="login-check-empty">No paths match</div>}
+                {filtered.map((p) => (
+                  <label key={p} className={`login-check-row${selected.has(p) ? " selected" : ""}`}>
+                    <input type="checkbox" checked={selected.has(p)} onChange={() => toggle(p)} className="login-check-input" />
+                    <span className="login-check-label">{p}</span>
+                  </label>
                 ))}
-              </select>
-            </div>
-            <div className="login-selected-area">
-              Selected: <strong>{areaPath}</strong>
+              </div>
+              {selected.size > 0 && (
+                <div className="login-selected-area">
+                  {selected.size} path{selected.size > 1 ? "s" : ""} selected
+                </div>
+              )}
             </div>
             {error && <div className="login-error">{error}</div>}
             <div className="login-actions">
               <button className="login-btn-secondary" onClick={() => setStep(1)}>← Back</button>
-              <button
-                className="login-btn"
-                onClick={handleConnect}
-                disabled={loading || !areaPath}
-              >
+              <button className="login-btn" onClick={handleConnect} disabled={loading || selected.size === 0}>
                 {loading ? "Loading…" : "Connect"}
               </button>
             </div>
           </>
         )}
 
-        <p className="login-note">
-          Your PAT is used only in-memory and never stored or transmitted beyond Azure DevOps.
-        </p>
+        <p className="login-note">Your PAT is used only in-memory and never stored or transmitted beyond Azure DevOps.</p>
       </div>
     </div>
   );

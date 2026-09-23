@@ -1068,3 +1068,29 @@ body {
 .story-title-link { font-size: 12px; font-weight: 600; color: #24292f; text-decoration: none; display: block; line-height: 1.35; }
 .story-title-link:hover { color: #0078d4; text-decoration: underline; }
 .story-meta-row { display: flex; gap: 10px; font-size: 11px; color: #57606a; margin-top: 4px; flex-wrap: wrap; }
+
+/* ── Login multi-select ────────────────────────────────────────── */
+.login-label-hint { font-weight: 400; color: #888; font-size: .8rem; }
+.login-search-paths { width: 100%; padding: 7px 10px; border: 1px solid #dee2e6; border-radius: 6px; font-size: .88rem; margin-bottom: 6px; box-sizing: border-box; }
+.login-checklist { max-height: 220px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 6px; background: #fafafa; }
+.login-check-row { display: flex; align-items: center; gap: 8px; padding: 6px 10px; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: background .12s; }
+.login-check-row:last-child { border-bottom: none; }
+.login-check-row:hover { background: #f0f4ff; }
+.login-check-row.selected { background: #e8f0fe; }
+.login-check-input { accent-color: #0078d4; width: 15px; height: 15px; flex-shrink: 0; }
+.login-check-label { font-size: .83rem; color: #333; }
+.login-check-empty { padding: 10px; color: #999; font-size: .83rem; text-align: center; }
+
+/* ── Summary sub-tabs ──────────────────────────────────────────── */
+.sum-subtab-bar { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #dee2e6; padding-bottom: 0; }
+.sum-subtab-btn { background: none; border: none; border-bottom: 3px solid transparent; padding: 8px 18px; font-size: .9rem; font-weight: 600; color: #666; cursor: pointer; margin-bottom: -2px; transition: color .15s, border-color .15s; }
+.sum-subtab-btn:hover { color: #0078d4; }
+.sum-subtab-btn.active { color: #0078d4; border-bottom-color: #0078d4; }
+
+/* ── Feature parent cell ───────────────────────────────────────── */
+.sum-feature-cell { font-size: .8rem; max-width: 200px; }
+.sum-feature-link { color: #555; }
+.sum-feature-none { color: #bbb; }
+
+/* ── Feature priority badge ────────────────────────────────────── */
+.feat-priority-badge { display: inline-block; border-radius: 4px; padding: 1px 8px; font-size: .78rem; font-weight: 700; white-space: nowrap; }
